@@ -31,3 +31,18 @@ def draw_faces(im, items, caption=None):
         draw.text((10, 10), caption, font=font, fill=(255, 255, 255, 255))
     del draw
     return im
+
+def draw_detections(im, items):
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype('arial.ttf', 16, encoding='unic')
+    for item in items:
+        rect = item['boundingBox']
+        r =[rect['left'], rect['top'], rect['left']+rect['width'], rect['top']+rect['height']]
+        draw.rectangle(r, outline='#FF0000')
+                        
+        s = '{0} ({1:.0%})'.format(item['tagName'], item['probability'])
+        draw.text((rect['left'], rect['top']), s, 
+                  font=font, fill=(0, 0, 0, 255))
+        
+    del draw
+    return im
